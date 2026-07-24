@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import useTypingEffect from "../hooks/useTypingEffect";
 import ToneSelector from "../components/ToneSelector";
 import LengthSelector from "../components/LengthSelector";
 import GenerateButton from "../components/GenerateButton";
@@ -57,8 +57,12 @@ export default function Home() {
 
 
   const [generatedResult, setGeneratedResult] = useState("");
+  const typedResult = useTypingEffect(
+  generatedResult,
+  15
+  );
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState();
 
 
 
@@ -487,6 +491,7 @@ export default function Home() {
 
             <ReplyOutput
               reply={generatedResult}
+              isGenerating={isLoading}
             />
 
 
