@@ -4,6 +4,7 @@ import ToneSelector from "../components/ToneSelector";
 import LengthSelector from "../components/LengthSelector";
 import GenerateButton from "../components/GenerateButton";
 import ReplyOutput from "../components/ReplyOutput";
+import { useEffect } from "react";
 
 import { generateEmailStream } from "../services/api";
 
@@ -14,6 +15,43 @@ export default function Home() {
     "A quiet workspace for creating thoughtful, professional emails with a little help.";
 
   const [displayText, setDisplayText] = useState("");
+
+  useEffect(() => {
+
+    if (!generatedResult) {
+      setDisplayedResult("");
+      return;
+    }
+
+
+    let index = 0;
+
+    setDisplayedResult("");
+
+
+    const interval = setInterval(() => {
+
+      setDisplayedResult(
+        previous =>
+          previous + generatedResult[index]
+      );
+
+
+      index++;
+
+
+      if (index >= generatedResult.length) {
+        clearInterval(interval);
+      }
+
+
+    }, 20);
+
+
+    return () => clearInterval(interval);
+
+
+  }, [generatedResult]);
 
   useEffect(() => {
     let index = 0;
@@ -57,6 +95,7 @@ export default function Home() {
 
 
   const [generatedResult, setGeneratedResult] = useState("");
+  const [displayedResult, setDisplayedResult] = useState("");
   const typedResult = useTypingEffect(
   generatedResult,
   15
